@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지수 공주에게 보내는 초대장</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Gaegu', cursive;
+            background-color: #fff5f5;
+        }
+        .heart-animation {
+            animation: heartBeat 1.5s infinite;
+        }
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 text-gray-800">
+
+    <div id="card" class="bg-white rounded-3xl shadow-xl p-8 max-w-md w-full text-center space-y-6">
+        
+        <div class="text-6xl heart-animation text-red-400">❤️</div>
+
+        <h1 class="text-3xl font-bold text-red-500">Happy Valentine's Day</h1>
+        <p class="text-xl leading-relaxed">
+            지수야<br>
+            이번 발렌타인 데이에 머해....?<br>
+            할 일 없으면.... 나랑 같이 시간 보낼까...?
+        </p>
+
+        <div class="bg-red-50 p-4 rounded-2xl text-left space-y-2">
+            <p>📅 날짜: 2026년 2월 14일</p>
+            <p>⏰ 시간: 오후 12시</p>
+            <p>📍 장소: 부천 소사 하나님의 교회에서 쭉 내려와서 카페 무홀 앞..</p>
+        </div>
+
+        <div id="btn-group" class="flex flex-col space-y-3">
+            <button onclick="acceptInvitation()" class="bg-red-400 hover:bg-red-500 text-white py-3 rounded-full text-xl transition-all shadow-md">
+                네네네네네네네네네네네네 무조건!!! (YES)
+            </button>
+            <button id="no-btn" onmouseover="moveButton()" class="border border-gray-300 text-gray-400 py-3 rounded-full text-xl transition-all">
+                시른데? (NO)
+            </button>
+        </div>
+
+        <div id="success-msg" class="hidden space-y-4">
+            <p class="text-2xl text-pink-500 font-bold">너가 수락한거다? 뽀뽀 마구마구 해주마 ❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</p>
+        </div>
+
+    </div>
+
+    <div class="mt-8 text-gray-500">
+        그 날 까지: <span id="countdown" class="text-red-400 font-bold"></span>
+    </div>
+
+    <script>
+        // NO 버튼 피하기 기능
+        function moveButton() {
+            const btn = document.getElementById('no-btn');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            
+            btn.style.position = 'absolute';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        // 수락 버튼 클릭 시
+        function acceptInvitation() {
+            document.getElementById('btn-group').classList.add('hidden');
+            document.getElementById('success-msg').classList.remove('hidden');
+            createConfetti();
+        }
+
+        // 카운트다운 로직
+        function updateCountdown() {
+            const target = new Date('2026-02-14T18:00:00');
+            const now = new Date();
+            const diff = target - now;
+
+            if (diff <= 0) {
+                document.getElementById('countdown').innerText = "해피 발렌타인!";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            
+            document.getElementById('countdown').innerText = `${days}일 ${hours}시간 ${minutes}분 남음`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // 간단한 축하 효과 (콘페티)
+        function createConfetti() {
+            for(let i=0; i<30; i++) {
+                const confetti = document.createElement('div');
+                confetti.innerText = '🌸';
+                confetti.style.position = 'fixed';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-20px';
+                confetti.style.fontSize = Math.random() * 20 + 10 + 'px';
+                confetti.style.transition = 'transform 3s ease-out, top 3s ease-out';
+                document.body.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.style.top = '110vh';
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                }, 10);
+            }
+        }
+    </script>
+</body>
+</html>
